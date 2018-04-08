@@ -42,11 +42,12 @@
         <script type="text/javascript">
       var supers = ["Spider-Man", "Superman", "Batman", "Deadpool"];
 
+$(document).ready(function() {
 
       function displaySuperInfo() {
 
         var superHero = $(this).attr("data-name");
-        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + superHero + "&api_key=jeS23yFIW8QXCo7O3gKAog4hDTQLeVFp&limit=10";
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + superHero + "&api_key=EyeuWE3INGv2CDz1GimWVqSfztQ9zEcT&limit=10";
         var j;
         var superGif;
         var superStill;
@@ -75,10 +76,10 @@
                 superRating = response.data[j].rating;
                 superTitle = response.data[j].title;
                 superDiv = $(" <div class='card text-center mt-2 mb-2'>")
-                superImg = "<img class='card-img-top' src='"+superStill+"' alt='Card image cap'>";
+                superImg = "<img class='card-img-top' class='gif' src='" + superStill + "' data-state='static' alt='Card image cap'>";
                 superCard = $("<div class='card-body'>");
                 superHead = "<h5 class='card-title'>" + superTitle + "</h5>";
-                superP = "<p>rating:" + superRating+ "</p>";
+                superP = "<p>rating:" + superRating + "</p>";
                 superA =  "<a href='" + superLink + "' class='btn btn-primary'>See Original</a>";
                 $(".superDisplay").append(superDiv);
                 $(superDiv).append(superImg);
@@ -90,6 +91,17 @@
            
       })
       }
+      
+      
+      $("body").on("click", ".gif" , function (){
+        var state = $(this).attr(data-state);
+
+        console.log(state);
+
+
+
+      });
+
 
       function renderButtons() {
 
@@ -131,6 +143,7 @@
       // Calling the renderButtons function to display the intial buttons
       renderButtons();
       
+})
     </script>
   </div>
 </body>
