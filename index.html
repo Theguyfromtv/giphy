@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Giphy Super Hero Game</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+
+  <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="buttons-view"></div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card-columns superDisplay">
+            </div>
+           
+        </div>
+   
+
+        <div class="col-md-4">
+            <form id="super-form">
+            <label for="super-input">Add a Super Hero Bro</label>
+            <input type="text" id="super-input"><br>
+
+            <input id="add-super" type="submit" value="Add a Super Hero Bro">
+            </form>
+        </div>
+    </div>
+
+    <div id="super-view"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script type="text/javascript">
+      var supers = ["Spider-Man", "Superman", "Batman", "Deadpool"];
+
+
+      function displaySuperInfo() {
+
+        var superHero = $(this).attr("data-name");
+        var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + superHero + "&api_key=jeS23yFIW8QXCo7O3gKAog4hDTQLeVFp&limit=10";
+        var j;
+        var superGif;
+        var superStill;
+        var superLink;
+        var superRating;
+        var superTitle;
+        var superDiv
+        var superImg 
+        var superCard 
+        var superHead 
+        var superP 
+        var superA
+
+
+        // Creates AJAX call for the specific movie button being clicked
+        $.ajax({
+          url: queryURL,
+          method: "GET"
+        }).then(function(response) {
+
+          console.log(response);
+            for (j=0; j<response.data.length; j++){
+                superGif = response.data[j].images.fixed_height.url;
+                superStill = response.data[j].images.fixed_height_still.url;
+                superLink = response.data[j].bitly_gif_url;
+                superRating = response.data[j].rating;
+                superTitle = response.data[j].title;
+                superDiv = $(" <div class='card text-center mt-2 mb-2'>")
+                superImg = "<img class='card-img-top' src='"+superStill+"' alt='Card image cap'>";
+                superCard = $("<div class='card-body'>");
+                superHead = "<h5 class='card-title'>" + superTitle + "</h5>";
+                superP = "<p>rating:" + superRating+ "</p>";
+                superA =  "<a href='" + superLink + "' class='btn btn-primary'>See Original</a>";
+                $(".superDisplay").append(superDiv);
+                $(superDiv).append(superImg);
+                $(superDiv).append(superCard);
+                $(superCard).append(superHead);
+                $(superCard).append(superP);
+                $(superCard).append(superA);
+            }
+           
+      })
+      }
+
+      function renderButtons() {
+
+        $("#buttons-view").empty();
+        for (var i = 0; i < supers.length; i++) {
+
+          // Then dynamicaly generates buttons for each movie in the array
+          // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
+          var a = $("<button>");
+          // Adds a class of movie to our button
+          a.addClass("super");
+          // Added a data-attribute
+          a.attr("data-name", supers[i]);
+          // Provided the initial button text
+          a.text(supers[i]);
+          console.log(a);
+          // Addedx the button to the buttons-view div
+          $("#buttons-view").append(a);
+        }
+      }
+
+      // This function handles events where the add movie button is clicked
+      $("#add-super").on("click", function(event) {
+        event.preventDefault();
+        // This line of code will grab the input from the textbox
+        var superHero = $("#super-input").val().trim();
+
+        // The movie from the textbox is then added to our array
+        supers.push(superHero);
+        console.log(supers);
+
+        // Calling renderButtons which handles the processing of our movie array
+        renderButtons();
+      })
+
+      // Adding click event listeners to all elements with a class of "movie"
+      $(document).on("click", ".super", displaySuperInfo);
+
+      // Calling the renderButtons function to display the intial buttons
+      renderButtons();
+      
+    </script>
+  </div>
+</body>
+
+</html>
