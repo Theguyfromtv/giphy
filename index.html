@@ -42,7 +42,6 @@
         <script type="text/javascript">
       var supers = ["Spider-Man", "Superman", "Batman", "Deadpool"];
 
-$(document).ready(function() {
 
       function displaySuperInfo() {
 
@@ -54,12 +53,13 @@ $(document).ready(function() {
         var superLink;
         var superRating;
         var superTitle;
-        var superDiv
-        var superImg 
-        var superCard 
-        var superHead 
-        var superP 
-        var superA
+        var superDiv;
+        var superImg; 
+        var superCard;
+        var superHead;
+        var superP;
+        var superA;
+        var superClick;
 
 
         // Creates AJAX call for the specific movie button being clicked
@@ -76,31 +76,50 @@ $(document).ready(function() {
                 superRating = response.data[j].rating;
                 superTitle = response.data[j].title;
                 superDiv = $(" <div class='card text-center mt-2 mb-2'>")
-                superImg = "<img class='card-img-top' class='gif' src='" + superStill + "' data-state='static' alt='Card image cap'>";
+                superClick = $("<div class='superClick'>")
+                superImg = "<img class='card-img-top' class='gif' src='" + superStill + "' data-animate='" +superGif+"' data-static'" + superStill + "'data-state='static' alt='Card image cap'>";
                 superCard = $("<div class='card-body'>");
                 superHead = "<h5 class='card-title'>" + superTitle + "</h5>";
                 superP = "<p>rating:" + superRating + "</p>";
                 superA =  "<a href='" + superLink + "' class='btn btn-primary'>See Original</a>";
                 $(".superDisplay").append(superDiv);
-                $(superDiv).append(superImg);
+                $(superDiv).append(superClick);
+                $(superClick).append(superImg);
                 $(superDiv).append(superCard);
                 $(superCard).append(superHead);
                 $(superCard).append(superP);
                 $(superCard).append(superA);
-            }
+
+                 $(".superClick").on("click" , "img" ,function (){
+                console.log(this);
+                var state=$(this).attr("data-state");
+
+                console.log(state);
+            
+                if (state=== "static"){
+
+                $(this).attr("src", $(this).attr("data-animate"));
+                $(this).attr("data-state", "animate");
+
+                }
+                else {
+                $(this).attr("src", $(this).attr("data-static"));
+                $(this).attr("data-state", "static");
+                }
+
+            
            
+            });
+            }
+
+           
+            
+        
       })
-      }
-      
-      
-      $("body").on("click", ".gif" , function (){
-        var state = $(this).attr(data-state);
-
-        console.log(state);
+    }
 
 
-
-      });
+     
 
 
       function renderButtons() {
@@ -143,7 +162,12 @@ $(document).ready(function() {
       // Calling the renderButtons function to display the intial buttons
       renderButtons();
       
-})
+    
+
+    
+
+
+
     </script>
   </div>
 </body>
