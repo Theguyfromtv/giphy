@@ -127,39 +127,27 @@
         $("#buttons-view").empty();
         for (var i = 0; i < supers.length; i++) {
 
-          // Then dynamicaly generates buttons for each movie in the array
-          // This code $("<button>") is all jQuery needs to create the beginning and end tag. (<button></button>)
           var a = $("<button>");
-          // Adds a class of movie to our button
           a.addClass("super");
-          // Added a data-attribute
           a.attr("data-name", supers[i]);
-          // Provided the initial button text
           a.text(supers[i]);
           console.log(a);
-          // Addedx the button to the buttons-view div
           $("#buttons-view").append(a);
         }
       }
 
-      // This function handles events where the add movie button is clicked
       $("#add-super").on("click", function(event) {
         event.preventDefault();
-        // This line of code will grab the input from the textbox
         var superHero = $("#super-input").val().trim();
 
-        // The movie from the textbox is then added to our array
         supers.push(superHero);
         console.log(supers);
 
-        // Calling renderButtons which handles the processing of our movie array
         renderButtons();
       })
 
-      // Adding click event listeners to all elements with a class of "movie"
       $(document).on("click", ".super", displaySuperInfo);
 
-      // Calling the renderButtons function to display the intial buttons
       renderButtons();
       
     
